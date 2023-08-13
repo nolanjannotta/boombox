@@ -25,7 +25,10 @@
 <g id="songs">
 
 </g>
+
+<!-- main background -->
 <rect width="1200" height="500" fill="#f5ebe0" stroke="black" stroke-width="3"></rect>
+
 
 <text id="counter" x="600" y="50" font-size="20" font-family="W95FA" text-anchor="middle"></text>
 <text id="title" x="600" y="100" font-size="35" font-family="W95FA" text-anchor="middle"></text>
@@ -65,20 +68,24 @@
 
 
 <g fill="transparent" stroke="black" stroke-width="1">
-<rect x="465" y="220" width="50" height="30" onclick="back()"></rect>
-<!-- <rect x="435" y="199" width="50" height="30" onclick="playSong()"></rect> -->
-<!-- <rect x="515" y="199" width="50" height="30" onclick="pauseSong()"></rect> -->
+        <!-- the back button rectangle -->
+        <rect x="465" y="220" width="50" height="30" onclick="back()"></rect>
+        <!-- <rect x="435" y="199" width="50" height="30" onclick="playSong()"></rect> -->
+        <!-- <rect x="515" y="199" width="50" height="30" onclick="pauseSong()"></rect> -->
 
-<rect x="565" y="220" width="70" height="30" onclick="playPause()"></rect>
-<rect x="690" y="220" width="50" height="30" onclick="next()"></rect>
+        <!-- main play pause button rectangle -->
+        <rect x="565" y="220" width="70" height="30" onclick="playPause()"></rect>
 
-<!-- <rect x="595" y="199" width="50" height="30" onclick="next()"></rect> -->
+        <!-- next song button rectangle -->
+        <rect x="690" y="220" width="50" height="30" onclick="next()"></rect>
+
+        <!-- <rect x="595" y="199" width="50" height="30" onclick="next()"></rect> -->
 
 
-<!-- these are the rectangles at the botton -->
-<rect x="390" y="415" width="120" height="80" rx="5"></rect>
-<rect x="540" y="415" width="120" height="80" rx="5"></rect>
-<rect x="690" y="415" width="120" height="80" rx="5"></rect>
+        <!-- these are the rectangles at the botton -->
+        <rect x="390" y="415" width="120" height="80" rx="5"></rect>
+        <rect x="540" y="415" width="120" height="80" rx="5"></rect>
+        <rect x="690" y="415" width="120" height="80" rx="5"></rect>
 
 
 </g>
