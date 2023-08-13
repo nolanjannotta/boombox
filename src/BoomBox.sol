@@ -41,8 +41,33 @@ contract BoomBox {
 
     }
 
+    function setBodyType(uint speakerId, uint bodyType) {
+        // check for ownership of speaker and bodyType
+        
+        // removes current bodyType if not default, sends back to owner
+        // stores new bodyType, transfers to this contract
+        // if this speaker had other parameters installed, this checks if 
+        // owner also owns the correct version for the new bodyType
+        
+        // another option, if you own screenType2 for example, you own screenType2 for all bodyTypes?
+
+        
+
+    }
+
+    function setSpeakerParams(uint speakerId, uint parameterId) public {
+        // check for ownership of speaker and parameter
+
+        
 
 
+
+    }
+
+
+
+
+    // for installing and uninstalling music
     function install(address song, uint songId, uint speakerId) public {
         //do stuff
     }
