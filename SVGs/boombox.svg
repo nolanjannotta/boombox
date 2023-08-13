@@ -1,0 +1,295 @@
+<svg
+  viewBox="0 0 1200 500"
+  width="100%"
+  height="100%"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  onload="initialize()"
+
+>
+
+<style>
+            @font-face{
+                font-family:"W95FA";
+                src:url(data:application/font-woff;charset=utf-8;base64,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) 
+                format("woff"); 
+            }
+
+            
+    </style>
+
+
+
+
+
+<g id="songs">
+
+</g>
+<rect width="1200" height="500" fill="#f5ebe0" stroke="black" stroke-width="3"></rect>
+
+<text id="counter" x="600" y="50" font-size="20" font-family="W95FA" text-anchor="middle"></text>
+<text id="title" x="600" y="100" font-size="35" font-family="W95FA" text-anchor="middle"></text>
+<text id="artist" x="600" y="150" font-size="23" font-family="W95FA" text-anchor="middle"> </text>
+
+<text font-size="30" font-family="W95FA" x="10" y="30" >BoomBox </text>
+<text font-size="18" font-family="W95FA" x="125" y="30" >by boom for boomBox with Box by BoomBox for Boom</text>
+
+
+<text x="490" y="246" font-size="40" text-anchor="middle">⏮</text>
+<!-- <text x="460" y="226" font-size="40" text-anchor="middle">⏵</text> -->
+<!-- <text x="540" y="225" font-size="40" text-anchor="middle">⏸</text> -->
+<text x="600" y="246" font-size="40" text-anchor="middle">⏯︎</text>
+<text x="715" y="246" font-size="40" text-anchor="middle">⏭</text>
+
+<text id="progress" x="600" y="180" font-size="15" font-family="W95FA" text-anchor="middle">.......................................................................................................................................</text>
+
+
+<text id="analyzer" x="600" y="320" font-size="15" font-family="W95FA" text-anchor="middle">...................................................................................................</text>
+<text x="600" y="335" font-size="15" font-family="W95FA" text-anchor="middle">analyzer</text>
+
+
+<text x="450" y="430" font-size="15" font-family="W95FA" text-anchor="middle">reverb</text>
+<text x="600" y="430" font-size="15" font-family="W95FA" text-anchor="middle">pitch/speed</text>
+<text x="750" y="430" font-size="15" font-family="W95FA" text-anchor="middle">gain</text>
+
+<text x="420" y="445" font-size="12" font-family="W95FA" text-anchor="middle">2.5</text>
+<text x="480" y="445" font-size="12" font-family="W95FA" text-anchor="middle">9.5</text>
+
+
+<text x="600" y="445" font-size="12" font-family="W95FA" text-anchor="middle">7.5</text>
+<text x="750" y="445" font-size="12" font-family="W95FA" text-anchor="middle">0.3</text>
+
+
+<text x="420" y="490" font-size="10" font-family="W95FA" text-anchor="middle">dry</text>
+<text x="480" y="490" font-size="10" font-family="W95FA" text-anchor="middle">wet</text>
+
+
+<g fill="transparent" stroke="black" stroke-width="1">
+<rect x="465" y="220" width="50" height="30" onclick="back()"></rect>
+<!-- <rect x="435" y="199" width="50" height="30" onclick="playSong()"></rect> -->
+<!-- <rect x="515" y="199" width="50" height="30" onclick="pauseSong()"></rect> -->
+
+<rect x="565" y="220" width="70" height="30" onclick="playPause()"></rect>
+<rect x="690" y="220" width="50" height="30" onclick="next()"></rect>
+
+<!-- <rect x="595" y="199" width="50" height="30" onclick="next()"></rect> -->
+
+
+<!-- these are the rectangles at the botton -->
+<rect x="390" y="415" width="120" height="80" rx="5"></rect>
+<rect x="540" y="415" width="120" height="80" rx="5"></rect>
+<rect x="690" y="415" width="120" height="80" rx="5"></rect>
+
+
+</g>
+
+
+    <circle cx="420" cy="465" r="15" stroke="black" fill="transparent"></circle>
+    <circle cx="480" cy="465" r="15" stroke="black" fill="transparent"></circle>
+
+    <circle cx="600" cy="470" r="20" stroke="black" fill="transparent"></circle>
+    <circle cx="750" cy="470" r="20" stroke="black" fill="transparent"></circle>
+
+    <circle cx="160" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
+    <circle cx="1040" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
+
+    <rect x="10" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
+    <rect x="890" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
+
+
+
+    <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
+        <![CDATA[
+        
+    
+    const gateWay = "https://arweave.net/";
+    //let currentSong;
+    
+    let songs = []; // array of audio elements
+    let order = []; // randomized order 
+
+    let currentIndex;
+
+
+    let progress = document.getElementById("progress");
+    let progressIndex;
+
+    
+
+    //this is the data we get from the blockchain:
+    const uris = ["ar://eBud6yxw-0SZa4hgOOZnuasGODRFUBQ85EcQfAjuZDM/4","ar://moOL48oQrlxBV6Cn1R3RJhoctjlvXMOQsSRH2J9VjQs/2","ar://3DMAtcXBE5ZHygp_aH_zfoSMPqAYEqA3TgMB5v-DIHQ/6"];
+    const titles = ["NORMAL AGAIN", "ominous vibes","MOLLIFY"];
+    const artists = ["oshi", "oshi", "OSHI"];
+    
+
+    let context;
+
+    
+]]>
+    </script>
+
+<script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
+
+<![CDATA[
+
+    async function getTokenURI(index) {
+        const response = await fetch( gateWay + uris[index].slice(5));
+        const json = await response.json();
+        return json.losslessAudio.slice(5);
+        
+
+
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+            }
+    
+    }
+
+
+    function initialize() {
+        context = new AudioContext();
+        for(let i=0; i<uris.length; i++) {
+            order.push(i);
+        }
+
+        shuffleArray(order);
+        currentIndex = 0;
+        loadSong()
+        updateCounter();
+
+
+
+    }
+
+
+
+    async function loadSong() {
+
+
+
+        //context = new AudioContext();
+        let uri = await getTokenURI(order[currentIndex]);
+        let currentSong = new Audio(gateWay + uri);
+
+        currentSong.addEventListener("timeupdate",updateProgress);
+        //currentSong.setAttribute("id", "song1")
+        currentSong.setAttribute("type", "audio/wav")
+        currentSong.setAttribute("crossorigin", "anonymous")
+        currentSong.currentTime = 0;
+
+        document.getElementById("title").textContent = titles[order[currentIndex]]
+        document.getElementById("artist").textContent = artists[order[currentIndex]]
+        document.getElementById("songs").appendChild(currentSong);
+        songs.push(currentSong);
+        const track = context.createMediaElementSource(currentSong);
+        songs[currentSong].arrayBuffer;
+        
+        track.connect(context.destination);
+
+        
+    }
+
+
+
+
+    function updateProgress() {
+        if(songs[currentIndex].paused) return;
+        let percent = (songs[currentIndex].currentTime/songs[currentIndex].duration);
+        let newString = progress.textContent;
+        
+        progressIndex = Math.floor((newString.length) * percent)
+
+        
+
+        //or this way
+        newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+
+
+        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex) + "|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+
+
+        progress.textContent = newString;
+
+
+    }
+
+    function playPause() {
+         if (context.state === "suspended") {
+            context.resume();
+        }
+
+        if(songs[currentIndex].paused) {
+            songs[currentIndex].play();
+            
+        }
+        else {
+
+            songs[currentIndex].pause();
+
+        }
+
+    }
+
+    function clearProgress() {
+        progress.textContent = ".".repeat(135);
+    }
+    function updateCounter() {
+        document.getElementById("counter").textContent = `${currentIndex + 1}/${uris.length} `
+    }
+
+    function back() {
+        if(songs[currentIndex].currentTime == 0) {
+            currentIndex --;
+            loadSong(order[currentIndex]) 
+        }
+        
+
+        songs[currentIndex].currentTime = 0;
+        clearProgress();
+        updateCounter();
+    }
+
+    function next() {
+        songs[currentIndex].currentTime = 0;
+        songs[currentIndex].pause()
+        
+        loadSong(order[currentIndex])
+        updateCounter();
+        currentIndex ++;
+    }
+
+ ]]>
+</script>
+
+<!-- <script>
+<![CDATA[
+    async function createReverb() {
+        let convolver = audioCtx.createConvolver();
+
+        // load impulse response from file
+        let response = await fetch("path/to/impulse-response.wav");
+        let arraybuffer = await response.arrayBuffer();
+        convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
+
+  return convolver;
+}
+    
+
+]]>
+</script> -->
+
+    <!-- this script will take all the effects created above and join them to the context -->
+<script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
+
+<![CDATA[
+
+    
+
+]]>
+</script>
+
+</svg>
