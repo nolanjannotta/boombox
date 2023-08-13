@@ -41,7 +41,7 @@ pragma solidity ^0.8.13;
 // etc...
 
 
-// effects could start at id 1000 or something
+// effects could start at id 10000 or something
 // 10000 = reverb, 
 // 10001 = analyzer, 
 // 10002 = gain, 
