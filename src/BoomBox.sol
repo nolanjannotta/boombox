@@ -35,7 +35,6 @@ contract BoomBox {
         uint8 background;
         uint8 buttons;
         uint8 effectsStyle;
-
         uint packedEffectsData; 
 
 
@@ -51,6 +50,9 @@ contract BoomBox {
         
         // another option, if you own screenType2 for example, you own screenType2 for all bodyTypes?
 
+        // another option, changing bodyType automatically removes all other parameters and sets to default
+        // 
+
         
 
     }
@@ -58,7 +60,7 @@ contract BoomBox {
     function setSpeakerParams(uint speakerId, uint parameterId) public {
         // check for ownership of speaker and parameter
 
-        
+
 
 
 
