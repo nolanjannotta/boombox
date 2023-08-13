@@ -193,7 +193,6 @@
         document.getElementById("songs").appendChild(currentSong);
         songs.push(currentSong);
         const track = context.createMediaElementSource(currentSong);
-        songs[currentSong].arrayBuffer;
         
         track.connect(context.destination);
 
@@ -249,6 +248,7 @@
     }
 
     function back() {
+        if(currentIndex == 0) return;
         if(songs[currentIndex].currentTime == 0) {
             currentIndex --;
             loadSong(order[currentIndex]) 
@@ -261,12 +261,14 @@
     }
 
     function next() {
+        if(currentIndex == uris.length-1) return;
         songs[currentIndex].currentTime = 0;
         songs[currentIndex].pause()
-        
+        currentIndex ++;
         loadSong(order[currentIndex])
         updateCounter();
-        currentIndex ++;
+        clearProgress();
+        
     }
 
  ]]>
