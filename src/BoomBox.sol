@@ -59,6 +59,13 @@ contract BoomBox {
 
     function setSpeakerParams(uint speakerId, uint parameterId) public {
         // check for ownership of speaker and parameter
+        // for example:
+        // installing parameter id #1204 into speakerId #54
+        // this installs background #4 into speaker #54 (see SpeakerDesigner.sol)
+        // if bodyType #1 is not installed, this reverts
+        // 
+
+
 
 
 
