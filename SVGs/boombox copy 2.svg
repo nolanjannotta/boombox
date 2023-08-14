@@ -96,7 +96,6 @@
     <circle cx="480" cy="465" r="15" stroke="black" fill="transparent"></circle>
 
     <circle cx="600" cy="470" r="20" stroke="black" fill="transparent"></circle>
-
     <circle cx="750" cy="470" r="20" stroke="black" fill="transparent"></circle>
 
     <circle cx="160" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
@@ -112,6 +111,7 @@
         
     
     const gateWay = "https://arweave.net/";
+    //let currentSong;
     
     let songs = []; // array of audio elements
     let order = []; // randomized order 
@@ -124,9 +124,8 @@
 
 
     let progress = document.getElementById("progress");
-    let songGroup = document.getElementById("songs");
+    let songGroup  = document.getElementById("songs");
     let progressIndex;
-    let context;
 
     
 
@@ -136,7 +135,7 @@
     const artists = ["oshi", "oshi", "OSHI"];
     
 
-    
+    let context;
 
     
 ]]>
@@ -145,13 +144,6 @@
 <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
 
 <![CDATA[
-    
-
-    let mouseX,mouseY
-    document.onmousemove = (event)=>{mouseX = event.clientX; mouseY = event.clientY;};
-
-
-    
 
     async function getLosslessAudio(uri) {
         const response = await fetch( gateWay + uri.slice(5));
@@ -177,16 +169,29 @@
 
 
 
-    function getCurrentSong() {
-        return songGroup.children[currentIndex]
+    async function loadSong(uri) {
+        let losslessAudio = await getLosslessAudio(uri);
+        let buffer = await getAudioBuffer(losslessAudio)
+
+        const source = await context.createBufferSource();
+        source.buffer = buffer;
+        source.addEventListener("timeupdate",updateProgress)
+
+        source.connect(context.destination)
+
+        songs.push(buffer);
+
+        //console.log(losslessAudio)
+        //console.log(source)
+
     }
 
 
 
     function updateProgress() {
-        //console.log(getCurrentSong().currentTime, getCurrentSong().duration)
-        if(!getCurrentSong()) return;
-        let percent = (getCurrentSong().currentTime/getCurrentSong().duration);
+        console.log(context.currentTime, sources[currentIndex].duration)
+        if(!songs[currentIndex]) return;
+        let percent = (context.currentTime/context.duration);
         let newString = progress.textContent;
         
         progressIndex = Math.floor((newString.length) * percent)
@@ -194,10 +199,10 @@
         
 
         //or this way
-        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+        newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
 
 
-        newString = (progressIndex > 0) ? newString.substring(0,progressIndex) + "|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex) + "|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
 
 
         progress.textContent = newString;
@@ -206,58 +211,57 @@
     }
 
     function playPause() {
-         if (context.state === "suspended") {
-            context.resume();
-        }
-        let song = getCurrentSong();
-        if(song.paused) {
-            
-            song.playbackRate = .8
-            song.volume = 1
-            song.preservesPitch = false
-            song.play();
-            
-        }
-        else {
 
-            song.pause();
+        console.log(sources[currentIndex])
+        // if (context.state === "suspended") {
+        //    context.resume();
+        //}
 
-        }
+        //if(songs[currentIndex].paused) {
+
+            sources[currentIndex].playbackRate.value = .8
+            sources[currentIndex].addEventListener("timeupdate",updateProgress)
+            sources[currentIndex].start();
+            
+        //}
+        //else {
+
+        //    songs[currentIndex].stop();
+
+        //}
+
+        console.log(sources[currentIndex])
 
     }
 
-    function updateDisplay() {
+    function clearProgress() {
         progress.textContent = ".".repeat(135);
-        document.getElementById("counter").textContent = `${currentIndex + 1}/${uris.length} `;
-        document.getElementById("title").textContent = titles[order[currentIndex]];
-        document.getElementById("artist").textContent = artists[order[currentIndex]];
+    }
+    function updateCounter() {
+        document.getElementById("counter").textContent = `${currentIndex + 1}/${uris.length} `
     }
 
     function back() {
-        let song = getCurrentSong();
-        if(song.currentTime < 1 && currentIndex > 0) {
+        if(currentIndex == 0) return;
+        if(songs[currentIndex].currentTime == 0) {
             currentIndex --;
+            //loadSong(order[currentIndex]) 
         }
-
-        song.currentTime = 0;
         
 
-        //if(currentIndex == 0) return;
-
-        
-        
-        updateDisplay();
-        
+        songs[currentIndex].currentTime = 0;
+        clearProgress();
+        updateCounter();
     }
 
     function next() {
-        let song = getCurrentSong();
         if(currentIndex == uris.length-1) return;
-        song.pause()
-        song.currentTime = 0;
-        
+        songs[currentIndex].currentTime = 0;
+        songs[currentIndex].pause()
         currentIndex ++;
-        updateDisplay()
+        //loadSong(order[currentIndex])
+        updateCounter();
+        clearProgress();
         
     }
 
@@ -269,6 +273,7 @@
 
 we split the audio basically creating a bus to put reverb on, then we can mix
 
+...maybe...
 -->
 <script>
 
@@ -292,23 +297,6 @@ we split the audio basically creating a bus to put reverb on, then we can mix
 ]]>
 </script>
 
-<script>
-
-<![CDATA[
-
-
-
-    function updateSpeedClickDown() {
-        let song = getCurrentSong();
-
-        let cx = 600;
-        let cy = 470;
-
-            
-
-        }
-]]>
-</script>
 
 
 
@@ -325,8 +313,9 @@ we split the audio basically creating a bus to put reverb on, then we can mix
 
         shuffleArray(order);
         currentIndex = 0;
-        updateDisplay();
-        
+        updateCounter();
+        document.getElementById("title").textContent = titles[order[currentIndex]]
+        document.getElementById("artist").textContent = artists[order[currentIndex]]
 
 
     }
@@ -342,15 +331,20 @@ we split the audio basically creating a bus to put reverb on, then we can mix
         order.forEach(async (index)=> {
             let uri = uris[index];
             let losslessAudio = await getLosslessAudio(uri);
-
-            let song = new Audio(gateWay + losslessAudio)
-            //song.setAttribute("id", "song1")
-            song.setAttribute("type", "audio/wav")
-            song.setAttribute("crossorigin", "anonymous")
-            song.currentTime = 0;
-            song.addEventListener("timeupdate",updateProgress);
-            songGroup.appendChild(song);
             
+            let buffer = await getAudioBuffer(losslessAudio);
+            
+            buffers.push(buffer);
+
+            const source = context.createBufferSource();
+            source.buffer = buffer;
+            
+            sources.push(source)
+
+            source.connect(context.destination);
+            
+
+           
         })
 
         
