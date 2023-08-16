@@ -8,6 +8,24 @@
     onload="onLoad()"
 >
 
+
+<filter id="displacementFilter">
+    <feTurbulence
+    id="turbulence"
+      type="turbulence"
+      seed="1"
+      baseFrequency="0.002"
+      numOctaves="5"
+      result="turbulence" />
+    <feDisplacementMap
+      in2="turbulence"
+      in="SourceGraphic"
+      scale="20"
+      xChannelSelector="R"
+      yChannelSelector="G" />
+  </filter>
+
+
 <style>
             @font-face{
                 font-family:"W95FA";
@@ -26,10 +44,11 @@
 
 </g>
 
-
+<!-- style="filter: url(#displacementFilter)" -->
+<g id="wrapper" > 
 
 <!-- main background -->
-<rect width="1200" height="500" fill="#f5ebe0" stroke="black" stroke-width="3" onclick="initialize()"></rect>
+<rect  width="1200" height="500" fill="#f5ebe0" stroke="black" stroke-width="3" onclick="initialize()"></rect>
 
 
 <text id="counter" x="600" y="50" font-size="20" font-family="W95FA" text-anchor="middle"></text>
@@ -50,9 +69,11 @@
 
 
 <!-- <text id="analyzer" x="600" y="320" font-size="15" font-family="W95FA" text-anchor="middle">...................................................................................................</text> -->
-<text x="600" y="365" font-size="15" font-family="W95FA" text-anchor="middle">analyzer</text>
+<!-- <text x="600" y="365" font-size="15" font-family="W95FA" text-anchor="middle">analyzer</text> -->
 
 <g id="analyser">
+
+<polyline xmlns="http://www.w3.org/2000/svg" points="375,300 825,300" stroke="black" fill="transparent"/>
 
 
 
@@ -141,6 +162,8 @@
     <rect x="890" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
 
 
+</g>
+
 
     <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
         <![CDATA[
@@ -171,14 +194,15 @@
 
     let nodes = [];
     let updaters = [];
-    let nodeGetters = [];
+    let nodeInitializers = [];
+    let displayUpdaters = [];
 
     let analyserArray
 
     //this is the data we get from the blockchain:
-    const uris = ["ar://eBud6yxw-0SZa4hgOOZnuasGODRFUBQ85EcQfAjuZDM/4","ar://moOL48oQrlxBV6Cn1R3RJhoctjlvXMOQsSRH2J9VjQs/2","ar://3DMAtcXBE5ZHygp_aH_zfoSMPqAYEqA3TgMB5v-DIHQ/6"];
-    const titles = ["NORMAL AGAIN", "ominous vibes","MOLLIFY"];
-    const artists = ["oshi", "oshi", "OSHI"];
+    const uris = ["ar://eBud6yxw-0SZa4hgOOZnuasGODRFUBQ85EcQfAjuZDM/4","ar://moOL48oQrlxBV6Cn1R3RJhoctjlvXMOQsSRH2J9VjQs/2","ar://3DMAtcXBE5ZHygp_aH_zfoSMPqAYEqA3TgMB5v-DIHQ/6","ar://lPtK7w7CKheFDJgdbS5lrT1teXq_MLpRew_1stTroTg/4"];
+    const titles = ["NORMAL AGAIN", "ominous vibes","MOLLIFY", "OTHERSIDE"];
+    const artists = ["oshi", "oshi", "OSHI", "OSHI"];
     
 
     
@@ -221,6 +245,17 @@
 
     function getCurrentSong() {
         return songGroup.children[currentIndex]
+    }
+
+    function connectNodes() {
+        nodes.forEach((nodeObject, index)=>{
+            if(index < nodes.length-1 && !nodeObject.bypassed) {
+                nodes[index].node.connect(nodes[index+1].node)
+            }
+
+        })
+
+
     }
 
 
@@ -307,6 +342,7 @@
     }
     
     function updateDisplay() {
+        displayUpdaters.forEach((updater)=>{updater()})
         progress.textContent = ".".repeat(135);
         counter.textContent = `${currentIndex + 1}/${uris.length} `;
         title.textContent = titles[order[currentIndex]];
@@ -401,7 +437,7 @@
 we split the audio basically creating a bus to put reverb on, then we can mix
 
 -->
-<script>
+<!-- <script>
 
 <![CDATA[
 
@@ -494,11 +530,11 @@ function updateWet(angle, originX, originY) {
 
 
 
-nodeGetters.push(getConvolver)
+nodeInitializers.push(getConvolver)
 
 
 ]]>
-</script>
+</script> -->
 
 <!-- gain -->
 <script>
@@ -506,15 +542,11 @@ nodeGetters.push(getConvolver)
 <![CDATA[
 let gainIndex
 function getGainNode() {
-    //let gainSplitter = context.createChannelSplitter(2);
     let gain = context.createGain();
-    //let gainMerger = context.createChannelMerger(2);
-    //gain.gain.setTargetAtTime(1.5, context.currentTime, 0.015);
-
     gainIndex = nodes.push(gain)
 }
 
-    nodeGetters.push(getGainNode)
+    nodeInitializers.push(getGainNode)
 
 
     function updateGain(angle, originX, originY) {
@@ -558,69 +590,65 @@ function getGainNode() {
     function createAnalyser() {
         let analyser = context.createAnalyser();
         analyser.smoothingTimeConstant = 0.05;
-        analyserArray = new Uint8Array(300);
+        analyserArray = new Float32Array(300);
+
         analyzerIndex = nodes.push(analyser);
+        //initAnalyser2();
 
     }
 
-    nodeGetters.push(createAnalyser);
+    nodeInitializers.push(createAnalyser);
 
     function updateAnalyser() {
-        nodes[analyzerIndex-1].getByteTimeDomainData(analyserArray);
+        nodes[analyzerIndex-1].getFloatFrequencyData(analyserArray);
+
         let points = "";
         for(let i=0; i<300; i++) {
             let y2 = analyserArray[i] / 255
             //console.log(y2)
-            //analyserGroup.children[i].setAttribute("y2", 350 - (y2*100))
-            points = points + `${375 + (1.5*i)},${Math.floor(350 - (y2*100))} `
+            //analyserGroup.children[i].setAttribute("y2", 300 - (y2*100))
+            points = points + `${375 + (1.5*i)},${Math.floor(300 - (y2*100))} `
 
         }
         //console.log(points)
         analyserGroup.children[0].setAttribute("points", points)
         //console.log(analyserArray)
+        
+    }
+
+    function distort() {
+        //style="filter: url(#displacementFilter)"
+
+        //nodes[analyzerIndex-1].getFloatFrequencyData(analyserArray);
+
+        let max = Math.max.apply(Math, analyserArray);
+        if(max > -12) {
+            console.log(Math.abs(max) % 3)
+            document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 3) /1000)
+            document.getElementById("turbulence").setAttribute("seed", Math.abs(max))
+            document.getElementById("wrapper").setAttribute("style", "filter: url(#displacementFilter)")
+        }
+        else {
+            document.getElementById("wrapper").setAttribute("style", "")
+        }
+
+
+
+    }
+
+    function resetAnalyser() {
+        analyserGroup.children[0].setAttribute("points", "375,320 825,320")
+        
     }
 
     
     updaters.push(updateAnalyser);
+    updaters.push(distort);
+    displayUpdaters.push(resetAnalyser)
 
-    function initAnalyser() {
-
-        for(let i=0; i<300; i++) {
-            let line = document.createElementNS('http://www.w3.org/2000/svg','line');
-            let animate = document.createElementNS('http://www.w3.org/2000/svg','animate');
-
-            animate.setAttribute("attributeName", "y2")
-            animate.setAttribute("value", "320;320")
-            animate.setAttribute("dur", "1s")
-            animate.setAttribute("repeatCount", "indefinite")
+   
 
 
-            //<line x1="465" x2="465" y1="320" y2="300" stroke="black"/>
-            line.setAttribute("x1", 375 + (1.5 * i))
-            line.setAttribute("x2", 375 + (1.5 * i))
-            line.setAttribute("y1", 350)
-            line.setAttribute("y2", 350)
-            line.setAttribute("stroke", "black")
-            line.appendChild(animate)
-            analyserGroup.appendChild(line);
-        }
-    }
-
-
-    function initAnalyser2() {
-
-        
-        let polyline = document.createElementNS('http://www.w3.org/2000/svg','polyline');
-        polyline.setAttribute("points", "375,330 825,330")
-        polyline.setAttribute("stroke", "black")
-        polyline.setAttribute("fill", "transparent")
-
-        //for(let i=0; i<300; i++) { 
-        //    polyline.setAttribute("")   
-        //}
-
-        analyserGroup.appendChild(polyline);
-    }
 
 
 ]]>
@@ -662,7 +690,7 @@ function getGainNode() {
 
         // run through list of node getting function we made above depended on what the smart contract gave us
         // this also appends each node to the nodes list
-        nodeGetters.forEach((getter)=>{getter()})
+        nodeInitializers.forEach((getter)=>{getter()})
         // then we append the destination node
         nodes.push(context.destination)
         //loop through order array load the audio track as a buffer, store buffer in array       
@@ -683,7 +711,9 @@ function getGainNode() {
             
         })
 
-        initAnalyser2();
+        //nodeInitializers.forEach((initializer)=>{
+        //    initializer();
+        //})
 
         
         nodes.forEach((node, index)=>{
@@ -700,3 +730,34 @@ function getGainNode() {
 </script>
 
 </svg>
+
+
+
+
+
+
+
+
+
+ <!-- function initAnalyser() {
+
+        for(let i=0; i<300; i++) {
+            let line = document.createElementNS('http://www.w3.org/2000/svg','line');
+            let animate = document.createElementNS('http://www.w3.org/2000/svg','animate');
+
+            animate.setAttribute("attributeName", "y2")
+            animate.setAttribute("value", "320;320")
+            animate.setAttribute("dur", "1s")
+            animate.setAttribute("repeatCount", "indefinite")
+
+
+            //<line x1="465" x2="465" y1="320" y2="300" stroke="black"/>
+            line.setAttribute("x1", 375 + (1.5 * i))
+            line.setAttribute("x2", 375 + (1.5 * i))
+            line.setAttribute("y1", 350)
+            line.setAttribute("y2", 350)
+            line.setAttribute("stroke", "black")
+            line.appendChild(animate)
+            analyserGroup.appendChild(line);
+        }
+    } -->
