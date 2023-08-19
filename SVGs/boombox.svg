@@ -40,9 +40,7 @@
 
 
 
-<g id="songs">
-
-</g>
+<g id="songs"></g>
 
 <!-- style="filter: url(#displacementFilter)" -->
 <g id="wrapper" > 
@@ -50,116 +48,122 @@
 <!-- main background -->
 <rect  width="1200" height="500" fill="#f5ebe0" stroke="black" stroke-width="3" onclick="initialize()"></rect>
 
+<!-- speaker stuff -->
+<circle cx="160" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
+<circle cx="1040" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
 
+<rect x="10" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
+<rect x="890" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
+<!-- end of speaker stuff -->
+
+
+<!-- song index, title and artist stuff -->
 <text id="counter" x="600" y="50" font-size="20" font-family="W95FA" text-anchor="middle"></text>
 <text id="title" x="600" y="100" font-size="35" font-family="W95FA" text-anchor="middle"></text>
 <text id="artist" x="600" y="150" font-size="23" font-family="W95FA" text-anchor="middle"> </text>
+<!-- end of song index, title and artist stuff -->
 
+
+
+<!-- logo stuff -->
 <text font-size="30" font-family="W95FA" x="10" y="30" >BoomBox </text>
 <text font-size="18" font-family="W95FA" x="125" y="30" >by boom for boomBox with Box by BoomBox for Boom</text>
+<!-- end of logo stuff -->
 
 
-<text x="490" y="246" font-size="40" text-anchor="middle">⏮</text>
-<!-- <text x="460" y="226" font-size="40" text-anchor="middle">⏵</text> -->
-<!-- <text x="540" y="225" font-size="40" text-anchor="middle">⏸</text> -->
-<text x="600" y="246" font-size="40" text-anchor="middle">⏯︎</text>
-<text x="715" y="246" font-size="40" text-anchor="middle">⏭</text>
 
 <text id="progress" x="600" y="180" font-size="15" font-family="W95FA" text-anchor="middle">.......................................................................................................................................</text>
 
-
-<!-- <text id="analyzer" x="600" y="320" font-size="15" font-family="W95FA" text-anchor="middle">...................................................................................................</text> -->
-<!-- <text x="600" y="365" font-size="15" font-family="W95FA" text-anchor="middle">analyzer</text> -->
-
 <g id="analyser">
-
-<polyline xmlns="http://www.w3.org/2000/svg" points="375,300 825,300" stroke="black" fill="transparent"/>
-
-
-
+    <polyline xmlns="http://www.w3.org/2000/svg" points="375,300 825,300" stroke="black" fill="transparent"/>
 </g>
 
 
+
+
+<!-- controls -->
+<g stroke="black" fill="transparent" stroke-width="1">
+    <text x="490" y="246" font-size="40" text-anchor="middle">⏮</text>
+    <text x="600" y="246" font-size="40" text-anchor="middle">⏯︎</text>
+    <text x="715" y="246" font-size="40" text-anchor="middle">⏭</text>
+
+    <rect x="465" y="220" width="50" height="30" onclick="back()"></rect>
+    <rect x="565" y="220" width="70" height="30" onclick="playPause()"></rect>
+    <rect x="690" y="220" width="50" height="30" onclick="next()"></rect>
+</g>
+
+<!-- end of controls -->
+
+
+
+<!-- reverb knobs stuff -->
+<rect id="reverbBox" x="390" y="415" stroke="black" fill="transparent" width="120" height="80" rx="5"></rect>
 <text x="450" y="430" font-size="15" font-family="W95FA" text-anchor="middle">reverb</text>
-<text x="600" y="430" font-size="15" font-family="W95FA" text-anchor="middle">speed</text>
-<text x="750" y="430" font-size="15" font-family="W95FA" text-anchor="middle">gain</text>
 
 <text id="dryValue" x="420" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
 <text id="wetValue" x="480" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
 
 
-<text id="speedValue" x="600" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
-<text id="gainValue" x="750" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
 
 
 <text x="420" y="490" font-size="10" font-family="W95FA" text-anchor="middle">dry</text>
 <text x="480" y="490" font-size="10" font-family="W95FA" text-anchor="middle">wet</text>
 
-
-<g fill="transparent" stroke="black" stroke-width="1">
-        <!-- the back button rectangle -->
-        <rect x="465" y="220" width="50" height="30" onclick="back()"></rect>
-        <!-- <rect x="435" y="199" width="50" height="30" onclick="playSong()"></rect> -->
-        <!-- <rect x="515" y="199" width="50" height="30" onclick="pauseSong()"></rect> -->
-
-        <!-- main play pause button rectangle -->
-        <rect x="565" y="220" width="70" height="30" onclick="playPause()"></rect>
-
-        <!-- next song button rectangle -->
-        <rect x="690" y="220" width="50" height="30" onclick="next()"></rect>
-
-        <!-- <rect x="595" y="199" width="50" height="30" onclick="next()"></rect> -->
-
-
-        <!-- these are the rectangles at the botton -->
-        
-        <rect x="390" y="415" width="120" height="80" rx="5"></rect>
-        <rect  x="540" y="415" width="120" height="80" rx="5" ></rect>
-        
-        <rect x="690" y="415" width="120" height="80" rx="5"></rect>
-
-
+<g id="reverbDryGroup" onmousedown="nodeList[0].knobOnDry()" onmouseup="nodeList[0].knobOff()">
+<line id="reverbDry" transform="rotate(0,420,465)" x1="420" x2="420" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
+<circle cx="420" cy="465" r="15" stroke="black" fill="transparent" onmouseout="nodeList[0].knobOff()"></circle>
 </g>
 
+<g id="reverbWetGroup" onmousedown="nodeList[0].knobOnWet()" onmouseup="nodeList[0].knobOff()">
+<line id="reverbWet" transform="rotate(0,480,465)" x1="480" x2="480" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
+<circle cx="480" cy="465" r="15" stroke="black" fill="transparent" onmouseout="nodeList[0].knobOff()"></circle>
+</g>
 
-    <!-- reverb knobs -->
-    <g onmousemove="getAngle(420,465,updateDry)" onmouseup="turnKnobOff()">
-    <circle cx="420" cy="465" r="15" stroke="black" fill="transparent"></circle>
-    <line id="reverbDry" transform="rotate(0,420,465)" x1="420" x2="420" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
-    </g>
+<rect id="reverbBypass" onclick="nodeList[0].bypass()" x="495" y="420" rx="2" fill="transparent" stroke="black" width="10" height="7"></rect>
 
-    <g onmousemove="getAngle(480,465,updateWet)" onmouseup="turnKnobOff()">
-    <circle cx="480" cy="465" r="15" stroke="black" fill="transparent"></circle>
-    <line id="reverbWet" transform="rotate(0,480,465)" x1="480" x2="480" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
-    </g>
+<!-- _____________________________end of reverb knob stuff_________________________________________ -->
 
 
 
-    <!-- speed knob -->
-    <g onmousemove="getAngle(600,470,updateSpeed)" onmouseup="turnKnobOff()">
-        <circle cx="600" cy="470" r="20" stroke="black" fill="transparent"></circle>
-        <line id="speedKnob" transform="rotate(0,600,470)" x1="600" x2="600" y1="470" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()" ></line>
+<!-- speed knob stuff -->
+    <rect  x="540" y="415" fill="transparent" stroke="black" width="120" height="80" rx="5" ></rect>
+
+<g id="speedGroup" onmousedown="auxilary[0].knobOn()" onmouseup="auxilary[0].knobOff()">
+    <line id="speedKnob" transform="rotate(0,600,470)" x1="600" x2="600" y1="470" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" ></line>
+    <circle cx="600" onmouseout="auxilary[0].knobOff()" cy="470" r="20" stroke="black" fill="transparent"></circle>
+</g>
+<rect onclick="auxilary[0].preservePitch()"  id="preservePitch" x="555" y="435" rx="2" fill="transparent" stroke="black" width="10" height="7"></rect>
+
+<text x="560" y="450" font-size="8" font-family="W95FA" text-anchor="middle">preserve</text>
+<text x="560" y="457" font-size="8" font-family="W95FA" text-anchor="middle">pitch</text>
+<text x="600" y="430"  font-size="15" font-family="W95FA" text-anchor="middle">speed</text>
+<text id="speedValue" x="600" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
+
+<!-- ____________________________________end of speed knob stuff________________________________________________ -->
 
 
-    </g>
-    <rect onclick="preservePitch()" id="preservePitch" x="555" y="435" rx="2" fill="transparent" stroke="black" width="10" height="7"></rect>
+<!-- __________________________________________ gain knob stuff _____________________________________________________ -->
 
-    <text x="560" y="450" font-size="8" font-family="W95FA" text-anchor="middle">preserve</text>
-    <text x="560" y="457" font-size="8" font-family="W95FA" text-anchor="middle">pitch</text>
+<rect id="gainBox" x="690" y="415" stroke="black" width="120" fill="transparent" height="80" rx="5"></rect>
+
+<g id="gainGroup" onmousedown="nodeList[1].knobOn()" onmouseup="nodeList[1].knobOff()">
+    <line id="gainKnob" transform="rotate(0,750,470)" x1="750" x2="750" y1="470" y2="452" stroke="black" stroke-linecap="round" stroke-width="4"></line>
+    <circle id="gainCircle" onmouseout="nodeList[1].knobOff()" cx="750" cy="470" r="20" stroke="black" fill="transparent"></circle>
+</g> 
+    
+<text x="750" y="430" font-size="15" font-family="W95FA" text-anchor="middle">gain</text>
+<text id="gainValue" x="750" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
+
+<rect onclick="nodeList[1].bypass()"  id="gainBypass" x="795" y="420" rx="2" fill="transparent" stroke="black" width="10" height="7"></rect>
 
 
-    <!-- gain knob -->
-    <g onmousemove="getAngle(750,470,updateGain)" onmouseup="turnKnobOff()">
-    <circle cx="750" cy="470" r="20" stroke="black" fill="transparent"></circle>
-    <line id="gainKnob" transform="rotate(0,750,470)" x1="750" x2="750" y1="470" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
-    </g>
+<!-- ____________________________________end of gain knob stuff________________________________________________ -->
 
-     
-    <circle cx="160" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
-    <circle cx="1040" cy="200" r="120" stroke="black" fill="transparent" ></circle> 
 
-    <rect x="10" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
-    <rect x="890" y="40" height="450" width="300" rx="7" fill="transparent" stroke="black"></rect>
+
+
+
+    
 
 
 </g>
@@ -190,11 +194,10 @@
     let context;
     let reverbBuffer;
 
-    let trackInput = new Audio();
-
     let nodes = [];
     let updaters = [];
-    let nodeInitializers = [];
+    let nodeFactories = [];
+    let auxilaryFactory = [];
     let displayUpdaters = [];
 
     let analyserArray
@@ -247,37 +250,18 @@
         return songGroup.children[currentIndex]
     }
 
-    function connectNodes() {
-        nodes.forEach((nodeObject, index)=>{
-            if(index < nodes.length-1 && !nodeObject.bypassed) {
-                nodes[index].node.connect(nodes[index+1].node)
-            }
-
-        })
-
-
-    }
-
-
-
 
     function updateAll() {
         updaters.forEach((updater)=>{
-            try{
-              updater()  
-                }
-            catch(e) {
-                console.log(e)
-            }
-                
+              updater()                  
         })
     }
 
 
 
     function updateProgress() {
-        //if(!getCurrentSong()) return;
-        let percent = (getCurrentSong().currentTime/getCurrentSong().duration);
+        let song = getCurrentSong();
+        let percent = (song.currentTime/song.duration);
         let newString = progress.textContent;
         
         progressIndex = Math.floor((newString.length) * percent)
@@ -324,10 +308,8 @@
 
 
 
-    function getAngle(originX, originY, callback) {
+    function getAngle(originX, originY) {
 
-        
-        if(isPressed) {
             let angle = Math.atan((originX - mouseX) / (originY - mouseY))
 
             angle = angle * (180/Math.PI)
@@ -336,9 +318,9 @@
                 angle < 0 ? angle += 180 : angle -= 180
                 
             }
-            callback(-angle, originX, originY)
+            return angle;
+            //callback(-angle, originX, originY)
 
-        }
     }
     
     function updateDisplay() {
@@ -394,38 +376,63 @@
 <![CDATA[
 
 
+    function createSpeed() {
 
-    function preservePitch() {
-        let song = getCurrentSong();
-        song.preservesPitch = !song.preservesPitch;
-        song.preservesPitch ? document.getElementById("preservePitch").setAttribute("fill", "grey") :
-        document.getElementById("preservePitch").setAttribute("fill", "transparent")
-    }
+        let speedObject = {}
+        speedObject.getAngle = getAngle;
+        speedObject.speedModuleCenterX = 600;
+        speedObject.speedModuleCenterY = 470;
+        speedObject.song = getCurrentSong();
+        speedObject.type = "auxilary";
+        speedObject.speedGroup = document.getElementById("speedGroup");
+        speedObject.speedValue = document.getElementById("speedValue")
+        speedObject.speedKnob = document.getElementById("speedKnob")
 
 
-    function updateSpeed(angle, originX, originY) {
-        
-        
-        
-        let value = Math.abs(angle / 150)
-        
-        value = angle > 0 ? value + 1 : 1 - value
-        //console.log("speed", value)
-        if(value > 2) {
-            return
+        speedObject.knobOn = function() {
+            speedObject.speedGroup.onmousemove = speedObject.updateSpeed
+
         }
-        
+        speedObject.knobOff = function() {
+            speedObject.speedGroup.onmousemove = null
 
-        let song = getCurrentSong();
-        song.playbackRate = value.toFixed(2)
-        document.getElementById("speedKnob").setAttribute("transform", `rotate(${angle}, ${originX} ${originY})`)
-        document.getElementById("speedValue").textContent = `${value.toFixed(2)}`
+        }
 
+        speedObject.updateSpeed = function() {
+            let song = getCurrentSong();
+
+            let angle = speedObject.getAngle(speedObject.speedModuleCenterX,speedObject.speedModuleCenterY) * -1
+
+            let value = Math.abs(angle / 150)
+            
+            value = angle > 0 ? value + 1 : 1 - value
+            if(value > 2) {
+                return
+            }
+            
+            song.playbackRate = value.toFixed(2)
+            
+            speedObject.speedKnob.setAttribute("transform", `rotate(${angle}, ${speedObject.speedModuleCenterX} ${speedObject.speedModuleCenterY})`)
+            speedObject.speedValue.textContent = `${value.toFixed(2)}`  
+        }
+
+
+
+        speedObject.preservePitch = function() {
+            let song = getCurrentSong();
+            console.log(song)
+            song.preservesPitch = !song.preservesPitch;
+            song.preservesPitch ? document.getElementById("preservePitch").setAttribute("fill", "grey") :
+            document.getElementById("preservePitch").setAttribute("fill", "transparent")
+            }
+
+            
         
-        
+        return speedObject
     }
 
-
+    auxilaryFactory.push(createSpeed)
+ 
  ]]>
 </script>
 
@@ -437,27 +444,79 @@
 we split the audio basically creating a bus to put reverb on, then we can mix
 
 -->
-<!-- <script>
+
+<script>
 
 <![CDATA[
 
 let convolverGainIndex
 let busGain
 
-function getConvolver() {
+function createReverb(context) {
+
+    let reverbObject = {};
+
     let reverbSplitter = context.createChannelSplitter(2);
     let reverbMerger = context.createChannelMerger(2); 
     let convolverGain = context.createGain();
-
-    busGain = context.createGain();
-
+    let busGain = context.createGain();
     let convolver = context.createConvolver();
-    convolver.buffer = reverbBuffer;
 
 
-    let node
-    
-    // connecting both channels to convolver gain
+    reverbObject.input = reverbSplitter;
+    reverbObject.getAngle = getAngle;
+
+    reverbObject.reverbModuleCenterX = 450;
+    reverbObject.reverbModuleCenterY = 470;
+    reverbObject.name = "reverb"
+    reverbObject.bypassed = false;
+
+    reverbObject.reverbWetGroup = document.getElementById("reverbWetGroup")
+    reverbObject.reverbDryGroup = document.getElementById("reverbDryGroup")
+    reverbObject.box = document.getElementById("reverbBox")
+    reverbObject.bypassButton = document.getElementById("reverbBypass")
+
+    reverbObject.bypass = function() {
+        reverbObject.bypassed = !reverbObject.bypassed;
+        if(reverbObject.bypassed) {
+
+           reverbObject.box.setAttribute("fill", "black")
+           reverbObject.box.setAttribute("opacity", ".5")
+           //reverbObject.bypassButton.setAttribute("fill","black")
+
+
+        }
+        else {
+            reverbObject.box.setAttribute("fill", "transparent") 
+            reverbObject.box.setAttribute("opacity", "1")
+            //reverbObject.bypassButton.setAttribute("fill","transparent")
+        }
+        reset();
+    }
+
+
+    reverbObject.knobOnDry = function() {
+            reverbObject.reverbDryGroup.onmousemove = reverbObject.updateDry
+
+        }
+    reverbObject.knobOnWet = function() {
+            reverbObject.reverbWetGroup.onmousemove = reverbObject.updateWet
+
+        }
+    reverbObject.knobOff = function() {
+            reverbObject.reverbDryGroup.onmousemove = null
+            reverbObject.reverbWetGroup.onmousemove = null
+
+        }
+
+
+
+    getAudioBuffer("7iekDbhAAB3wW-pXwwsMuBnzU_cFztJkpMVcOjQFs74").then(
+        (reverbBuffer)=>{
+            convolver.buffer = reverbBuffer
+        });
+
+
 
     reverbSplitter.connect(convolverGain, 0);
     reverbSplitter.connect(convolverGain, 1);
@@ -467,109 +526,176 @@ function getConvolver() {
     
     reverbSplitter.connect(busGain, 0);
     reverbSplitter.connect(busGain, 1);
-
+    //busGain.gain.setTargetAtTime(.1, context.currentTime, 0.015);
     busGain.connect(reverbMerger, 0,1);
     busGain.connect(reverbMerger, 0,0);
 
     //reverbSplitter.connect(reverbMerger, 0,1);
-    
+
+    //convolverGain.gain.setTargetAtTime(0, context.currentTime, 0.015);
+
     convolverGain.connect(convolver)
 
-    //convolverGain.gain.setTargetAtTime(0.3, context.currentTime, 0.015);
 
     convolver.connect(reverbMerger, 0,1);
     convolver.connect(reverbMerger, 0,0);
-    
-    
 
-    nodes.push(reverbSplitter);
-    convolverGainIndex = nodes.push(convolverGain);
 
-    nodes.push(convolver);
-    nodes.push(reverbMerger);
-}
+    reverbObject.connect = function(inputNode) {
+        reverbMerger.connect(inputNode)
 
-function updateWet(angle, originX, originY) {
+    }
+    reverbObject.disconnect = function() {
+        reverbMerger.disconnect()
 
+    }
+
+    reverbObject.updateWet = function() {
+            
+            let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX + 30,reverbObject.reverbModuleCenterY -5) * -1
         let value = Math.abs(angle / 150)
         
         value = angle > 0 ? value + 1 : 1 - value
         //value *= value
-        //console.log(value)
 
         if(value > 4 || value < 0.0001) {
             return
         }
         
-        nodes[convolverGainIndex-1].gain.setTargetAtTime(value, context.currentTime, 0.015);
+        convolverGain.gain.setTargetAtTime(value, context.currentTime, 0.015);
 
-        document.getElementById("reverbWet").setAttribute("transform", `rotate(${angle}, ${originX} ${originY})`)
-        document.getElementById("wetValue").textContent = `${nodes[convolverGainIndex-1].gain.value.toFixed(2)}`
-        console.log(nodes[convolverGainIndex-1].gain.value)
+        document.getElementById("reverbWet").setAttribute("transform", `rotate(${angle}, ${reverbObject.reverbModuleCenterX + 30} ${reverbObject.reverbModuleCenterY -5})`)
+        document.getElementById("wetValue").textContent = `${convolverGain.gain.value.toFixed(2)}`
         
     }
-        function updateDry(angle, originX, originY) {
-            let value = Math.abs(angle / 150)
-            
-            value = angle > 0 ? value + 1 : 1 - value
-            //value *= value
 
-            if(value > 4 || value < 0.01) {
-                return
+    reverbObject.updateDry = function() {
+            
+        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX - 30,reverbObject.reverbModuleCenterY -5) * -1
+
+        let value = Math.abs(angle / 150)
+        
+        value = angle > 0 ? value + 1 : 1 - value
+        //value *= value
+
+        if(value > 4 || value < 0.01) {
+            return
         }
 
         
         busGain.gain.setTargetAtTime(value, context.currentTime, 0.015);
 
-        document.getElementById("reverbDry").setAttribute("transform", `rotate(${angle}, ${originX} ${originY})`)
+        document.getElementById("reverbDry").setAttribute("transform", `rotate(${angle}, ${reverbObject.reverbModuleCenterX - 30} ${reverbObject.reverbModuleCenterY -5})`)
         document.getElementById("dryValue").textContent = `${value.toFixed(2)}`
         
         
     }
 
+    return reverbObject;
+    
+    
+
+}
 
 
 
-nodeInitializers.push(getConvolver)
+
+
+
+nodeFactories.push(createReverb)
 
 
 ]]>
-</script> -->
+</script>
 
 <!-- gain -->
 <script>
 
 <![CDATA[
-let gainIndex
-function getGainNode() {
-    let gain = context.createGain();
-    gainIndex = nodes.push(gain)
-}
-
-    nodeInitializers.push(getGainNode)
 
 
-    function updateGain(angle, originX, originY) {
 
+function createGainNode(context) {
+    let gainObject = {}
+
+
+    let gainNode = context.createGain()
+
+
+    gainObject.name = "gainNode";
+    gainObject.bypassed = false;
+    gainObject.input = gainNode;
+    gainObject.gainGroup = document.getElementById("gainGroup");
+    gainObject.box = document.getElementById("gainBox");
+    gainObject.bypassButton = document.getElementById("gainBypass");
+
+
+    gainObject.knobOn = function() {
+        gainObject.gainGroup.onmousemove = gainObject.update
+
+    }
+    gainObject.knobOff = function() {
+        gainObject.gainGroup.onmousemove = null
+
+    }
+
+
+    gainObject.gainModuleCenterX = 750;
+    gainObject.gainModuleCenterY = 470;
+    gainObject.getAngle = getAngle;
+
+    gainObject.bypass = function() {
+        gainObject.bypassed = !gainObject.bypassed;
+        if(gainObject.bypassed) {
+
+           gainObject.box.setAttribute("fill", "black")
+           gainObject.box.setAttribute("opacity", ".5")
+
+           //gainObject.bypassButton.setAttribute("fill","black")
+
+
+        }
+        else {
+            gainObject.box.setAttribute("fill", "transparent") 
+            gainObject.box.setAttribute("opacity", "1")
+            //gainObject.bypassButton.setAttribute("fill","transparent")
+        }
+
+        reset();
+    }
+
+    gainObject.update = function() {
+
+        let angle = gainObject.getAngle(gainObject.gainModuleCenterX,gainObject.gainModuleCenterY) * -1
         let value = Math.abs(angle / 150)
         
         value = angle > 0 ? value + 1 : 1 - value
         value *= value
-        //console.log(value)
 
         if(value > 4 || value < 0.01) {
             return
         }
-        
-        nodes[gainIndex-1].gain.setTargetAtTime(value, context.currentTime, 0.015);
-        document.getElementById("gainKnob").setAttribute("transform", `rotate(${angle}, ${originX} ${originY})`)
+        gainObject.input.gain.setTargetAtTime(value, context.currentTime, 0.015);
+
+        document.getElementById("gainKnob").setAttribute("transform", `rotate(${angle}, ${gainObject.gainModuleCenterX} ${gainObject.gainModuleCenterY})`)
         document.getElementById("gainValue").textContent = `${value.toFixed(2)}`
-
-        
-        
     }
 
+    gainObject.connect = function(inputNode) {
+            gainObject.input.connect(inputNode)
+        }
+    gainObject.disconnect = function(inputNode) {
+            gainObject.input.disconnect(inputNode)
+        }
 
+
+
+
+    return gainObject;
+}
+
+
+nodeFactories.push(createGainNode)
 
 ]]>
 </script>
@@ -585,74 +711,83 @@ function getGainNode() {
 <script>
 
 <![CDATA[
-    let analyzerIndex;
-    let analyserGroup = document.getElementById("analyser");
-    function createAnalyser() {
-        let analyser = context.createAnalyser();
+
+    function createAnalyser(context) {
+        
+
+        let analyserObject = {};
+        let analyser = context.createAnalyser(); 
+        analyser.fftSize = 512;
         analyser.smoothingTimeConstant = 0.05;
-        analyserArray = new Float32Array(300);
-
-        analyzerIndex = nodes.push(analyser);
-        //initAnalyser2();
-
-    }
-
-    nodeInitializers.push(createAnalyser);
-
-    function updateAnalyser() {
-        nodes[analyzerIndex-1].getFloatFrequencyData(analyserArray);
-
-        let points = "";
-        for(let i=0; i<300; i++) {
-            let y2 = analyserArray[i] / 255
-            //console.log(y2)
-            //analyserGroup.children[i].setAttribute("y2", 300 - (y2*100))
-            points = points + `${375 + (1.5*i)},${Math.floor(300 - (y2*100))} `
-
-        }
-        //console.log(points)
-        analyserGroup.children[0].setAttribute("points", points)
-        //console.log(analyserArray)
         
-    }
+        //build the object:
+        analyserObject.name = "analyser"
+        analyserObject.input = analyser;
+        analyserObject.analyserGroup = document.getElementById("analyser");
+        analyserObject.analyserArray = new Float32Array(256);
+        analyserObject.bypassed = false;
 
-    function distort() {
-        //style="filter: url(#displacementFilter)"
+        analyserObject.updateAnalyser = function() {
+                analyserObject.input.getFloatFrequencyData(analyserObject.analyserArray);
+                
+                let points = "";
+                for(let i=0; i<256; i++) {
+                    let y2 = analyserObject.analyserArray[i] / 255
+                    //console.log(y2)
+                    //analyserGroup.children[i].setAttribute("y2", 300 - (y2*100))
+                    points = points + `${375 + (1.75*i)},${Math.floor(300 - (y2*100))} `
 
-        //nodes[analyzerIndex-1].getFloatFrequencyData(analyserArray);
+                }
+                analyserObject.analyserGroup.children[0].setAttribute("points", points)
+        
+            }
+            analyserObject.distort = function() {
+                let max = Math.max.apply(Math, analyserObject.analyserArray);
+                if(max > -12) {
+                    console.log(Math.abs(max) % 3)
+                    document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 3) /1000)
+                    document.getElementById("turbulence").setAttribute("seed", Math.abs(max))
+                    document.getElementById("wrapper").setAttribute("style", "filter: url(#displacementFilter)")
+                }
+                else {
+                    document.getElementById("wrapper").setAttribute("style", "")
+                }
+            }
 
-        let max = Math.max.apply(Math, analyserArray);
-        if(max > -12) {
-            console.log(Math.abs(max) % 3)
-            document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 3) /1000)
-            document.getElementById("turbulence").setAttribute("seed", Math.abs(max))
-            document.getElementById("wrapper").setAttribute("style", "filter: url(#displacementFilter)")
-        }
-        else {
-            document.getElementById("wrapper").setAttribute("style", "")
-        }
+            analyserObject.resetAnalyser = function() {
+                analyserObject.analyserGroup.children[0].setAttribute("points", "375,320 825,320")
+        
+            }
+            analyserObject.disconnect = function(inputNode) {
+                analyserObject.input.disconnect(inputNode)
+            }
+            analyserObject.connect = function(inputNode) {
+                analyserObject.input.connect(inputNode)
+            }
+
+            analyserObject.getTimeBasedUpdaters = function() {
+                return [analyserObject.distort, analyserObject.updateAnalyser]
+            }
+
+            analyserObject.getDisplayUpdater = function() {
+                return analyserObject.resetAnalyser
+            }
 
 
+        return analyserObject;
 
-    }
-
-    function resetAnalyser() {
-        analyserGroup.children[0].setAttribute("points", "375,320 825,320")
         
     }
 
     
-    updaters.push(updateAnalyser);
-    updaters.push(distort);
-    displayUpdaters.push(resetAnalyser)
 
-   
-
-
+    nodeFactories.push(createAnalyser)
 
 
 ]]>
 </script>
+
+
 
 
 
@@ -671,59 +806,124 @@ function getGainNode() {
         currentIndex = 0;
         updateDisplay();
 
-        
-
-        
-
-        
-
-
     }
 
+
+    function createDestination(context) {
+        let destinationObject = {}
+
+        destinationObject.input = context.destination
+        destinationObject.name = "destination"
+
+        return destinationObject
+    }
+
+
+
     
+    let nodeList = [];
+    let auxilary = []; 
+    let songSources = []
+    let connectedNodes = [];
 
     async function initialize() {
         if(context && context.state == "running") return;
         context = new AudioContext();
-        // get reverb buffer and save it
-        reverbBuffer = await getAudioBuffer("7iekDbhAAB3wW-pXwwsMuBnzU_cFztJkpMVcOjQFs74");
 
-        // run through list of node getting function we made above depended on what the smart contract gave us
+        // we are pushing the destination node to the end of the list
+        nodeFactories.push(createDestination)
+        
+        // run through list of node getters we made above depended on what the smart contract gave us
         // this also appends each node to the nodes list
-        nodeInitializers.forEach((getter)=>{getter()})
-        // then we append the destination node
-        nodes.push(context.destination)
-        //loop through order array load the audio track as a buffer, store buffer in array       
-
-        order.forEach(async (index)=> {
-            let uri = uris[index];
-            let losslessAudio = await getLosslessAudio(uri);
-
-            let song = new Audio(gateWay + losslessAudio)
-            //song.setAttribute("id", "song1")
-            song.setAttribute("type", "audio/wav")
-            song.setAttribute("crossorigin", "anonymous")
-            song.preservesPitch = false; 
-            song.currentTime = 0;
-            song.addEventListener("timeupdate",updateAll);
-            songGroup.appendChild(song);
-            context.createMediaElementSource(song).connect(nodes[0])
+        nodeFactories.forEach((getter,index)=>{
+            let node = getter(context);
             
-        })
+            if(node.getTimeBasedUpdaters) {
 
-        //nodeInitializers.forEach((initializer)=>{
-        //    initializer();
-        //})
+                
 
+                updaters = updaters.concat(node.getTimeBasedUpdaters())
+                
+                }
+                
+            if(node.getDisplayUpdaters) displayUpdaters.push(node.getDisplayUpdaters())
+
+            nodeList.push(node);
+                        
+            })
+   
+        auxilaryFactory.forEach((getter,index)=>{
+            let node = getter(context);
+            auxilary.push(node);
+                     
+            })
+
+            for await (index of order) {
+                let uri = uris[index];
+                let losslessAudio = await getLosslessAudio(uri);
+
+                let song = new Audio(gateWay + losslessAudio)
+                song.setAttribute("type", "audio/wav")
+                song.setAttribute("crossorigin", "anonymous")
+                song.preservesPitch = false; 
+                song.currentTime = 0;
+                song.addEventListener("timeupdate",updateAll);
+                songGroup.appendChild(song);
+                songSources[index] = context.createMediaElementSource(song);
+                //songSources[index].connect(nodeList[0].input)
+                
+
+                }
+
+        //console.log(`all song tracks connected to ${nodeList[0].name}`)
+
+
+
+        connectNodes()
+        connectSongs(nodeList[0])
         
-        nodes.forEach((node, index)=>{
-            if(index < nodes.length-1) {
-                nodes[index].connect(nodes[index+1])
-            }
+    }
 
+    function reset() {
+        disconnectNodes();
+        connectNodes();
+        connectSongs(connectedNodes[0])
+
+
+    }
+
+    function connectSongs(node) {
+        songSources.forEach((source) => {
+                source.connect(connectedNodes[0].input)
+            })
+
+            console.log(`all song tracks connected to ${node.name}`)
+
+    }
+
+
+    function connectNodes() {
+
+
+        connectedNodes = nodeList.filter((node) => node.bypassed != true)
+
+
+        for(let i=0; i<connectedNodes.length-1; i++) {
+            console.log(`the ${connectedNodes[i].name} is connecting to ${connectedNodes[i+1].name}`)
+                
+                connectedNodes[i].connect(connectedNodes[i+1].input) 
+
+        }
+
+    }
+
+    function disconnectNodes() {
+        connectedNodes.forEach((node) => {
+           node.disconnect && node.disconnect()
         })
-
-        
+        songSources.forEach((source) => {
+            source.disconnect()
+        })
     }
 
 ]]>
@@ -732,32 +932,3 @@ function getGainNode() {
 </svg>
 
 
-
-
-
-
-
-
-
- <!-- function initAnalyser() {
-
-        for(let i=0; i<300; i++) {
-            let line = document.createElementNS('http://www.w3.org/2000/svg','line');
-            let animate = document.createElementNS('http://www.w3.org/2000/svg','animate');
-
-            animate.setAttribute("attributeName", "y2")
-            animate.setAttribute("value", "320;320")
-            animate.setAttribute("dur", "1s")
-            animate.setAttribute("repeatCount", "indefinite")
-
-
-            //<line x1="465" x2="465" y1="320" y2="300" stroke="black"/>
-            line.setAttribute("x1", 375 + (1.5 * i))
-            line.setAttribute("x2", 375 + (1.5 * i))
-            line.setAttribute("y1", 350)
-            line.setAttribute("y2", 350)
-            line.setAttribute("stroke", "black")
-            line.appendChild(animate)
-            analyserGroup.appendChild(line);
-        }
-    } -->
