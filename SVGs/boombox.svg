@@ -15,7 +15,7 @@
       type="turbulence"
       seed="1"
       baseFrequency="0.002"
-      numOctaves="5"
+      numOctaves="40"
       result="turbulence" />
     <feDisplacementMap
       in2="turbulence"
@@ -728,7 +728,8 @@ nodeFactories.push(createGainNode)
             }
             analyserObject.distort = function() {
                 let max = Math.max.apply(Math, analyserObject.analyserArray);
-                if(max > -12) {
+
+                if(max > -10) {
                     console.log(Math.abs(max) % 3)
                     document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 3) /1000)
                     document.getElementById("turbulence").setAttribute("seed", Math.abs(max))
@@ -751,11 +752,11 @@ nodeFactories.push(createGainNode)
             }
 
             analyserObject.getTimeBasedUpdaters = function() {
-                return [analyserObject.distort, analyserObject.updateAnalyser]
+                return [analyserObject.updateAnalyser,analyserObject.distort]
             }
 
             analyserObject.getDisplayUpdater = function() {
-                return analyserObject.resetAnalyser
+                return [analyserObject.resetAnalyser]
             }
 
 
@@ -828,7 +829,9 @@ nodeFactories.push(createGainNode)
                 
                 }
                 
-            if(node.getDisplayUpdaters) displayUpdaters.push(node.getDisplayUpdaters())
+            if(node.getDisplayUpdater) {
+              displayUpdaters = displayUpdaters.concat(node.getDisplayUpdater())  
+            }
 
             nodeList.push(node);
                         
