@@ -186,21 +186,21 @@
     let title = document.getElementById("title");
     let artist = document.getElementById("artist");
 
-    let mouseX,mouseY
 
-    document.getElementById("svg").onmousemove = (event)=>{mouseX = event.clientX; mouseY = event.clientY;};
-
-    let progressIndex;
+    
     let context;
-    let reverbBuffer;
 
-    let nodes = [];
     let updaters = [];
-    let nodeFactories = [];
-    let auxilaryFactory = [];
     let displayUpdaters = [];
 
-    let analyserArray
+    let nodeFactories = [];
+    let auxilaryFactory = [];
+    
+    let nodeList = [];
+    let auxilary = []; 
+
+    let songSources = []
+    let connectedNodes = [];
 
     //this is the data we get from the blockchain:
     const uris = ["ar://eBud6yxw-0SZa4hgOOZnuasGODRFUBQ85EcQfAjuZDM/4","ar://moOL48oQrlxBV6Cn1R3RJhoctjlvXMOQsSRH2J9VjQs/2","ar://3DMAtcXBE5ZHygp_aH_zfoSMPqAYEqA3TgMB5v-DIHQ/6","ar://lPtK7w7CKheFDJgdbS5lrT1teXq_MLpRew_1stTroTg/4"];
@@ -228,7 +228,7 @@
         return json.losslessAudio.slice(5);
     }
 
-    async function getAudioBuffer(uri) {
+    async function getAudioBuffer(uri, context) {
         let response = await fetch(gateWay + uri, {mode: "cors"});
         let arrayBuffer = await response.arrayBuffer();
         let buffer = await context.decodeAudioData(arrayBuffer);
@@ -260,6 +260,7 @@
 
 
     function updateProgress() {
+        let progressIndex;
         let song = getCurrentSong();
         let percent = (song.currentTime/song.duration);
         let newString = progress.textContent;
@@ -302,19 +303,13 @@
     }
 
 
+    function getAngle(originX, originY, clientX, clientY) {
 
-
-    let isPressed = false
-
-
-
-    function getAngle(originX, originY) {
-
-            let angle = Math.atan((originX - mouseX) / (originY - mouseY))
+            let angle = Math.atan((originX - clientX) / (originY - clientY))
 
             angle = angle * (180/Math.PI)
 
-            if(mouseY > originY) {
+            if(clientY > originY) {
                 angle < 0 ? angle += 180 : angle -= 180
                 
             }
@@ -361,13 +356,6 @@
     }
 
 
-    function turnKnobOn() {
-        isPressed = true;
-    } 
-    function turnKnobOff() {
-        isPressed = false;
-    } 
-
  ]]>
 </script>
 
@@ -398,10 +386,10 @@
 
         }
 
-        speedObject.updateSpeed = function() {
+        speedObject.updateSpeed = function(event) {
             let song = getCurrentSong();
 
-            let angle = speedObject.getAngle(speedObject.speedModuleCenterX,speedObject.speedModuleCenterY) * -1
+            let angle = speedObject.getAngle(speedObject.speedModuleCenterX,speedObject.speedModuleCenterY, event.clientX, event.clientY) * -1
 
             let value = Math.abs(angle / 150)
             
@@ -420,7 +408,6 @@
 
         speedObject.preservePitch = function() {
             let song = getCurrentSong();
-            console.log(song)
             song.preservesPitch = !song.preservesPitch;
             song.preservesPitch ? document.getElementById("preservePitch").setAttribute("fill", "grey") :
             document.getElementById("preservePitch").setAttribute("fill", "transparent")
@@ -511,7 +498,7 @@ function createReverb(context) {
 
 
 
-    getAudioBuffer("7iekDbhAAB3wW-pXwwsMuBnzU_cFztJkpMVcOjQFs74").then(
+    getAudioBuffer("7iekDbhAAB3wW-pXwwsMuBnzU_cFztJkpMVcOjQFs74", context).then(
         (reverbBuffer)=>{
             convolver.buffer = reverbBuffer
         });
@@ -526,7 +513,6 @@ function createReverb(context) {
     
     reverbSplitter.connect(busGain, 0);
     reverbSplitter.connect(busGain, 1);
-    //busGain.gain.setTargetAtTime(.1, context.currentTime, 0.015);
     busGain.connect(reverbMerger, 0,1);
     busGain.connect(reverbMerger, 0,0);
 
@@ -550,9 +536,9 @@ function createReverb(context) {
 
     }
 
-    reverbObject.updateWet = function() {
+    reverbObject.updateWet = function(event) {
             
-            let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX + 30,reverbObject.reverbModuleCenterY -5) * -1
+            let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX + 30,reverbObject.reverbModuleCenterY -5, event.clientX, event.clientY) * -1
         let value = Math.abs(angle / 150)
         
         value = angle > 0 ? value + 1 : 1 - value
@@ -569,9 +555,8 @@ function createReverb(context) {
         
     }
 
-    reverbObject.updateDry = function() {
-            
-        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX - 30,reverbObject.reverbModuleCenterY -5) * -1
+    reverbObject.updateDry = function(event) {
+        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX - 30,reverbObject.reverbModuleCenterY -5, event.clientX, event.clientY) * -1
 
         let value = Math.abs(angle / 150)
         
@@ -664,9 +649,9 @@ function createGainNode(context) {
         reset();
     }
 
-    gainObject.update = function() {
+    gainObject.update = function(event) {
 
-        let angle = gainObject.getAngle(gainObject.gainModuleCenterX,gainObject.gainModuleCenterY) * -1
+        let angle = gainObject.getAngle(gainObject.gainModuleCenterX,gainObject.gainModuleCenterY, event.clientX, event.clientY) * -1
         let value = Math.abs(angle / 150)
         
         value = angle > 0 ? value + 1 : 1 - value
@@ -821,10 +806,7 @@ nodeFactories.push(createGainNode)
 
 
     
-    let nodeList = [];
-    let auxilary = []; 
-    let songSources = []
-    let connectedNodes = [];
+ 
 
     async function initialize() {
         if(context && context.state == "running") return;
