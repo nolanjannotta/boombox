@@ -174,7 +174,6 @@
 
     function createBoomBox(uris, titles, artists) {
         const boomBox = {};
-
         boomBox.uris = uris;
         boomBox.titles = titles;
         boomBox.artists = artists;
@@ -228,6 +227,22 @@
             updater()
         })
     }
+
+    function updateProgress() {
+        let progressIndex;
+        let song = boomBox.getCurrentSong();
+        let percent = (song.currentTime / song.duration);
+        let newString = boomBox.progress.textContent;
+
+        progressIndex = Math.floor((newString.length) * percent)
+
+        //or this way
+        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+
+        newString = (progressIndex > 0) ? newString.substring(0, progressIndex) + "|" + newString.substring(progressIndex + 1) : "|" + newString.substring(progressIndex + 1)
+        boomBox.progress.textContent = newString;
+    }
+
 
     boomBox.playPause = function() {
         if (boomBox.context.state === "suspended") {
@@ -411,21 +426,6 @@
     }
 
 
-    function updateProgress() {
-        let progressIndex;
-        let song = boomBox.getCurrentSong();
-        let percent = (song.currentTime / song.duration);
-        let newString = boomBox.progress.textContent;
-
-        progressIndex = Math.floor((newString.length) * percent)
-
-        //or this way
-        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
-
-        newString = (progressIndex > 0) ? newString.substring(0, progressIndex) + "|" + newString.substring(progressIndex + 1) : "|" + newString.substring(progressIndex + 1)
-        boomBox.progress.textContent = newString;
-    }
-
 
 
     boomBox.updaters.push(updateProgress);
@@ -538,7 +538,7 @@ function createReverb(context) {
     let convolver = context.createConvolver();
 
 
-    reverbObject.input = busGain;
+    reverbObject.input = reverbSplitter;
     reverbObject.getAngle = boomBox.getAngle;
 
     reverbObject.reverbModuleCenterX = 450;
@@ -563,6 +563,7 @@ function createReverb(context) {
         } else {
             reverbObject.box.setAttribute("fill", "transparent")
             reverbObject.box.setAttribute("opacity", "1")
+            //reverbObject.bypassButton.setAttribute("fill","transparent")
         }
         boomBox.reset();
     }
@@ -590,16 +591,32 @@ function createReverb(context) {
         });
 
 
-    
+
+    reverbSplitter.connect(convolverGain, 0);
+    reverbSplitter.connect(convolverGain, 1);
+
+
+    //connecting both channels the bus gain and then to merger
+
+    reverbSplitter.connect(busGain, 0);
+    reverbSplitter.connect(busGain, 1);
+    busGain.connect(reverbMerger, 0, 1);
+    busGain.connect(reverbMerger, 0, 0);
+
+
+    convolverGain.connect(convolver)
+
+
+    convolver.connect(reverbMerger, 0, 1);
+    convolver.connect(reverbMerger, 0, 0);
 
 
     reverbObject.connect = function(inputNode) {
-        busGain.connect(inputNode)
-        
+        reverbMerger.connect(inputNode)
 
     }
     reverbObject.disconnect = function() {
-        busGain.disconnect()
+        reverbMerger.disconnect()
 
     }
 
