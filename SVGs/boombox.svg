@@ -100,24 +100,33 @@
 <rect id="reverbBox" x="390" y="415" stroke="black" fill="transparent" width="120" height="80" rx="5"></rect>
 <text x="450" y="430" font-size="15" font-family="W95FA" text-anchor="middle">reverb</text>
 
-<text id="dryValue" x="420" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
+<!-- <text id="dryValue" x="420" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
 <text id="wetValue" x="480" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
 
 
 
 
 <text x="420" y="490" font-size="10" font-family="W95FA" text-anchor="middle">dry</text>
-<text x="480" y="490" font-size="10" font-family="W95FA" text-anchor="middle">wet</text>
+<text x="480" y="490" font-size="10" font-family="W95FA" text-anchor="middle">wet</text> -->
 
-<g id="reverbDryGroup" onmousedown="boomBox.nodeList[0].knobOnDry()" onmouseup="boomBox.nodeList[0].knobOff()">
+<!-- <g id="reverbDryGroup" onmousedown="boomBox.nodeList[0].knobOnDry()" onmouseup="boomBox.nodeList[0].knobOff()">
 <line id="reverbDry" transform="rotate(0,420,465)" x1="420" x2="420" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
 <circle cx="420" cy="465" r="15" stroke="black" fill="transparent" onmouseout="nodeList[0].knobOff()"></circle>
-</g>
+</g> -->
 
-<g id="reverbWetGroup" onmousedown="boomBox.nodeList[0].knobOnWet()" onmouseup="boomBox.nodeList[0].knobOff()">
+<!-- <g id="reverbWetGroup" onmousedown="boomBox.nodeList[0].knobOnWet()" onmouseup="boomBox.nodeList[0].knobOff()">
 <line id="reverbWet" transform="rotate(0,480,465)" x1="480" x2="480" y1="465" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" onmousedown="turnKnobOn()"></line>
 <circle cx="480" cy="465" r="15" stroke="black" fill="transparent" onmouseout="boomBox.nodeList[0].knobOff()"></circle>
+</g> -->
+
+<g id="reverbWetGroup" onmousedown="boomBox.nodeList[0].knobOnWet()" onmouseup="boomBox.nodeList[0].knobOff()">
+    <line id="reverbWet" transform="rotate(0,450,470)" x1="450" x2="450" y1="470" y2="452" stroke="black" stroke-linecap="round" stroke-width="4" ></line>
+    <circle cx="450" onmouseout="boomBox.nodeList[0].knobOff()" cy="470" r="20" stroke="black" fill="transparent"></circle>
 </g>
+
+<text id="wetValue" x="450" y="445" font-size="12" font-family="W95FA" text-anchor="middle">1.00</text>
+
+
 
 <rect id="reverbBypass" onclick="boomBox.nodeList[0].bypass()" x="495" y="420" rx="2" fill="transparent" stroke="black" width="10" height="7"></rect>
 
@@ -174,6 +183,7 @@
 
     function createBoomBox(uris, titles, artists) {
         const boomBox = {};
+
         boomBox.uris = uris;
         boomBox.titles = titles;
         boomBox.artists = artists;
@@ -187,6 +197,7 @@
         boomBox.artist = document.getElementById("artist");
         boomBox.updaters = [];
         boomBox.displayUpdaters = [];
+        boomBox.connectionUpdaters = [];
         boomBox.nodeFactories = [];
         boomBox.auxilaryFactory = [];
         boomBox.nodeList = [];
@@ -227,22 +238,6 @@
             updater()
         })
     }
-
-    function updateProgress() {
-        let progressIndex;
-        let song = boomBox.getCurrentSong();
-        let percent = (song.currentTime / song.duration);
-        let newString = boomBox.progress.textContent;
-
-        progressIndex = Math.floor((newString.length) * percent)
-
-        //or this way
-        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
-
-        newString = (progressIndex > 0) ? newString.substring(0, progressIndex) + "|" + newString.substring(progressIndex + 1) : "|" + newString.substring(progressIndex + 1)
-        boomBox.progress.textContent = newString;
-    }
-
 
     boomBox.playPause = function() {
         if (boomBox.context.state === "suspended") {
@@ -315,6 +310,7 @@
         boomBox.disconnectNodes();
         boomBox.connectNodes();
         boomBox.connectSongs()
+
     }
 
     boomBox.connectSongs = function() {
@@ -367,15 +363,13 @@
 
 
     boomBox.init = async function() {
+
+        boomBox.context = new AudioContext();
         boomBox.nodeFactories.forEach((getter, index) => {
             let node = getter(boomBox.context);
 
             if (node.getTimeBasedUpdaters) {
-
-
-
                 boomBox.updaters = boomBox.updaters.concat(node.getTimeBasedUpdaters())
-
             }
 
             if (node.getDisplayUpdater) {
@@ -425,6 +419,21 @@
         return destinationObject
     }
 
+
+    function updateProgress() {
+        let progressIndex;
+        let song = boomBox.getCurrentSong();
+        let percent = (song.currentTime / song.duration);
+        let newString = boomBox.progress.textContent;
+
+        progressIndex = Math.floor((newString.length) * percent)
+
+        //or this way
+        //newString = (progressIndex > 0) ? newString.substring(0,progressIndex - 1) + ".|" + newString.substring(progressIndex+1) : "|" + newString.substring(progressIndex+1)
+
+        newString = (progressIndex > 0) ? newString.substring(0, progressIndex) + "|" + newString.substring(progressIndex + 1) : "|" + newString.substring(progressIndex + 1)
+        boomBox.progress.textContent = newString;
+    }
 
 
 
@@ -509,6 +518,8 @@ function createSpeed() {
     return speedObject
 }
 
+
+
 boomBox.auxilaryFactory.push(createSpeed)
  
  ]]>
@@ -531,14 +542,37 @@ function createReverb(context) {
 
     let reverbObject = {};
 
-    let reverbSplitter = context.createChannelSplitter(2);
-    let reverbMerger = context.createChannelMerger(2);
-    let convolverGain = context.createGain();
-    let busGain = context.createGain();
-    let convolver = context.createConvolver();
 
 
-    reverbObject.input = reverbSplitter;
+    reverbObject.reverbSplitter = context.createChannelSplitter(2);
+    reverbObject.reverbMerger = context.createChannelMerger(2);
+    reverbObject.convolverGain = context.createGain();
+    reverbObject.input = context.createGain();
+    reverbObject.convolver = context.createConvolver();
+
+
+    reverbObject.input.connect(reverbObject.convolverGain)
+    
+    reverbObject.convolverGain.connect(reverbObject.convolver);
+    // connecting directly to outout, kind of like a bus
+    reverbObject.convolver.connect(context.destination);
+
+
+    reverbObject.connect = function(inputNode) {
+        reverbObject.input.connect(inputNode)
+    }
+    reverbObject.disconnect = function() {
+        reverbObject.input.disconnect()
+
+    }
+
+
+
+
+
+
+
+    
     reverbObject.getAngle = boomBox.getAngle;
 
     reverbObject.reverbModuleCenterX = 450;
@@ -548,11 +582,14 @@ function createReverb(context) {
 
     reverbObject.reverbWetGroup = document.getElementById("reverbWetGroup")
     reverbObject.reverbDryGroup = document.getElementById("reverbDryGroup")
+
     reverbObject.box = document.getElementById("reverbBox")
     reverbObject.bypassButton = document.getElementById("reverbBypass")
 
+
     reverbObject.bypass = function() {
         reverbObject.bypassed = !reverbObject.bypassed;
+        boomBox.reset();
         if (reverbObject.bypassed) {
 
             reverbObject.box.setAttribute("fill", "black")
@@ -563,14 +600,21 @@ function createReverb(context) {
         } else {
             reverbObject.box.setAttribute("fill", "transparent")
             reverbObject.box.setAttribute("opacity", "1")
-            //reverbObject.bypassButton.setAttribute("fill","transparent")
+            
         }
-        boomBox.reset();
+        
+        reverbObject.input.connect(reverbObject.convolverGain)
+    
+        reverbObject.convolverGain.connect(reverbObject.convolver);
+        // connecting directly to outout, kind of like a bus
+        reverbObject.convolver.connect(context.destination);
+        
+
     }
 
 
     reverbObject.knobOnDry = function() {
-        reverbObject.reverbDryGroup.onmousemove = reverbObject.updateDry
+        //reverbObject.reverbDryGroup.onmousemove = reverbObject.updateDry
 
     }
     reverbObject.knobOnWet = function() {
@@ -578,7 +622,7 @@ function createReverb(context) {
 
     }
     reverbObject.knobOff = function() {
-        reverbObject.reverbDryGroup.onmousemove = null
+        //reverbObject.reverbDryGroup.onmousemove = null
         reverbObject.reverbWetGroup.onmousemove = null
 
     }
@@ -587,42 +631,15 @@ function createReverb(context) {
 
     boomBox.getAudioBuffer("7iekDbhAAB3wW-pXwwsMuBnzU_cFztJkpMVcOjQFs74").then(
         (reverbBuffer) => {
-            convolver.buffer = reverbBuffer
+            reverbObject.convolver.buffer = reverbBuffer
         });
 
 
-
-    reverbSplitter.connect(convolverGain, 0);
-    reverbSplitter.connect(convolverGain, 1);
-
-
-    //connecting both channels the bus gain and then to merger
-
-    reverbSplitter.connect(busGain, 0);
-    reverbSplitter.connect(busGain, 1);
-    busGain.connect(reverbMerger, 0, 1);
-    busGain.connect(reverbMerger, 0, 0);
-
-
-    convolverGain.connect(convolver)
-
-
-    convolver.connect(reverbMerger, 0, 1);
-    convolver.connect(reverbMerger, 0, 0);
-
-
-    reverbObject.connect = function(inputNode) {
-        reverbMerger.connect(inputNode)
-
-    }
-    reverbObject.disconnect = function() {
-        reverbMerger.disconnect()
-
-    }
+    
 
     reverbObject.updateWet = function(event) {
 
-        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX + 30, reverbObject.reverbModuleCenterY - 5, event.clientX, event.clientY) * -1
+        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX, reverbObject.reverbModuleCenterY, event.clientX, event.clientY) * -1
         let value = Math.abs(angle / 150)
 
         value = angle > 0 ? value + 1 : 1 - value
@@ -632,33 +649,15 @@ function createReverb(context) {
             return
         }
 
-        convolverGain.gain.setTargetAtTime(value, context.currentTime, 0.015);
+        reverbObject.convolverGain.gain.setTargetAtTime(value, context.currentTime, 0.015);
 
-        document.getElementById("reverbWet").setAttribute("transform", `rotate(${angle}, ${reverbObject.reverbModuleCenterX + 30} ${reverbObject.reverbModuleCenterY -5})`)
-        document.getElementById("wetValue").textContent = `${convolverGain.gain.value.toFixed(2)}`
-
-    }
-
-    reverbObject.updateDry = function(event) {
-        let angle = reverbObject.getAngle(reverbObject.reverbModuleCenterX - 30, reverbObject.reverbModuleCenterY - 5, event.clientX, event.clientY) * -1
-
-        let value = Math.abs(angle / 150)
-
-        value = angle > 0 ? value + 1 : 1 - value
-        //value *= value
-
-        if (value > 4 || value < 0.01) {
-            return
-        }
-
-
-        busGain.gain.setTargetAtTime(value, context.currentTime, 0.015);
-
-        document.getElementById("reverbDry").setAttribute("transform", `rotate(${angle}, ${reverbObject.reverbModuleCenterX - 30} ${reverbObject.reverbModuleCenterY -5})`)
-        document.getElementById("dryValue").textContent = `${value.toFixed(2)}`
-
+        document.getElementById("reverbWet").setAttribute("transform", `rotate(${angle}, ${reverbObject.reverbModuleCenterX} ${reverbObject.reverbModuleCenterY})`)
+        document.getElementById("wetValue").textContent = `${reverbObject.convolverGain.gain.value.toFixed(2)}`
 
     }
+
+
+
 
     return reverbObject;
 
@@ -864,7 +863,6 @@ function onLoad() {
 
 async function initialize() {
     if (boomBox.context && boomBox.context.state == "running") return;
-    boomBox.context = new AudioContext();
     await boomBox.init()
 
 }
