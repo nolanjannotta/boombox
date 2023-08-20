@@ -538,7 +538,7 @@ function createReverb(context) {
     let convolver = context.createConvolver();
 
 
-    reverbObject.input = reverbSplitter;
+    reverbObject.input = busGain;
     reverbObject.getAngle = boomBox.getAngle;
 
     reverbObject.reverbModuleCenterX = 450;
@@ -563,7 +563,6 @@ function createReverb(context) {
         } else {
             reverbObject.box.setAttribute("fill", "transparent")
             reverbObject.box.setAttribute("opacity", "1")
-            //reverbObject.bypassButton.setAttribute("fill","transparent")
         }
         boomBox.reset();
     }
@@ -591,32 +590,16 @@ function createReverb(context) {
         });
 
 
-
-    reverbSplitter.connect(convolverGain, 0);
-    reverbSplitter.connect(convolverGain, 1);
-
-
-    //connecting both channels the bus gain and then to merger
-
-    reverbSplitter.connect(busGain, 0);
-    reverbSplitter.connect(busGain, 1);
-    busGain.connect(reverbMerger, 0, 1);
-    busGain.connect(reverbMerger, 0, 0);
-
-
-    convolverGain.connect(convolver)
-
-
-    convolver.connect(reverbMerger, 0, 1);
-    convolver.connect(reverbMerger, 0, 0);
+    
 
 
     reverbObject.connect = function(inputNode) {
-        reverbMerger.connect(inputNode)
+        busGain.connect(inputNode)
+        
 
     }
     reverbObject.disconnect = function() {
-        reverbMerger.disconnect()
+        busGain.disconnect()
 
     }
 

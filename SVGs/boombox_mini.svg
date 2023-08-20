@@ -194,12 +194,6 @@ function createSpeed(){let e={};return e.getAngle=boomBox.getAngle,e.speedModule
 
 
 
-<!-- reverb 
-
-we split the audio basically creating a bus to put reverb on, then we can mix
-
--->
-
 <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
 
 <![CDATA[
@@ -209,7 +203,6 @@ function createReverb(e){let t={},r=e.createChannelSplitter(2),n=e.createChannel
 ]]>
 </script>
 
-<!-- gain -->
 <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
 
 <![CDATA[
@@ -232,7 +225,6 @@ function createAnalyser(e){let t={},n=e.createAnalyser();return n.fftSize=512,n.
 
 
 
-    <!-- this script will take all the effects created above and join them to the context -->
 <script xmlns="http://www.w3.org/2000/svg" type="text/javascript">
 
 <![CDATA[
