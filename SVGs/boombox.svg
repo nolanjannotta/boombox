@@ -803,8 +803,8 @@ function createAnalyser(context) {
         let max = Math.max.apply(Math, analyserObject.analyserArray);
 
         if (max > -10) {
-            console.log(Math.abs(max) % 3)
-            document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 3) / 1000)
+            //console.log(Math.abs(max) % 3)
+            document.getElementById("turbulence").setAttribute("baseFrequency", (Math.abs(max) % 2) / 1000)
             document.getElementById("turbulence").setAttribute("seed", Math.abs(max))
             document.getElementById("wrapper").setAttribute("style", "filter: url(#displacementFilter)")
         } else {
